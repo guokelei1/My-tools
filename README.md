@@ -1,0 +1,31 @@
+# My-tools
+
+Personal utility repository for small tools and automation scripts.
+
+This repo is meant to grow over time. Each tool lives in its own folder with its own README so it can be installed, used, and removed independently.
+
+## Structure
+
+- `tools/shortcut-cd/`: PowerShell enhancement that lets `cd` jump into Windows folder shortcuts like `codex.lnk` without manually typing `.lnk`
+
+## Current tools
+
+### `shortcut-cd`
+
+Adds shortcut-aware navigation to PowerShell:
+
+- `cd codex`
+- `cd .\codex`
+
+If a real folder is not found, it automatically tries:
+
+- `codex.lnk`
+- `codex.link`
+
+See `tools/shortcut-cd/README.md` for installation and removal.
+
+## Notes
+
+- Tools are designed to stay loosely coupled
+- Each tool should provide its own install and uninstall path
+- Future tools can be added under `tools/<tool-name>/`
