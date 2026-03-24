@@ -1,0 +1,8 @@
+action=default-action
+backend=builtin
+working_directory=C:\Users\Administrator\Desktop\My-tools
+command=[]
+2026-03-24 17:42:17
+
+exit_code=0
+log_path=C:\Users\Administrator\Desktop\My-tools\tools\context-menu-runner\logs\20260324-174217-default-action.log
