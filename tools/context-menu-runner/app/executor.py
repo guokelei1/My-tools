@@ -77,29 +77,48 @@ def run_action(context: InvocationContext, action: ActionSpec) -> RunResult:
             combined_output += '\n'
         exit_code = 0
     else:
-        try:
-            completed = subprocess.run(
-                command,
-                cwd=str(working_directory),
-                env=environment,
-                capture_output=True,
-                text=True,
-                encoding='utf-8',
-                errors='replace',
-                timeout=action.timeout_seconds,
-                shell=False,
-            )
-            stdout = completed.stdout or ''
-            stderr = completed.stderr or ''
-            combined_output = stdout + stderr
-            exit_code = completed.returncode
-        except subprocess.TimeoutExpired as exc:
-            stdout = exc.stdout or ''
-            stderr = exc.stderr or ''
-            combined_output = f'timeout after {action.timeout_seconds} seconds\n{stdout}{stderr}'
-            exit_code = 124
+        step_lines: list[str] = []
 
-    if combined_output:
+        for index, raw_command in enumerate(action.commands, start=1):
+            step_marker = f'>>> [{index}/{len(action.commands)}] {raw_command}'
+            print(step_marker, flush=True)
+            step_lines.append(step_marker)
+
+            single_command = build_command(
+                backend=backend,
+                commands=[raw_command],
+                working_directory=working_directory,
+                environment=custom_environment,
+                continue_on_error=True,
+            )
+
+            try:
+                completed = subprocess.run(
+                    single_command,
+                    cwd=str(working_directory),
+                    env=environment,
+                    timeout=action.timeout_seconds,
+                    shell=False,
+                )
+                exit_code = completed.returncode
+            except subprocess.TimeoutExpired:
+                exit_code = 124
+                timeout_message = f'timeout after {action.timeout_seconds} seconds: {raw_command}'
+                print(timeout_message, flush=True)
+                step_lines.append(timeout_message)
+
+            result_line = f'<<< exit_code={exit_code}'
+            print(result_line, flush=True)
+            step_lines.append(result_line)
+
+            if exit_code != 0 and not action.continue_on_error:
+                break
+
+        combined_output = '\n'.join(step_lines)
+        if combined_output and not combined_output.endswith('\n'):
+            combined_output += '\n'
+
+    if combined_output and action.display_lines:
         print(combined_output, end='' if combined_output.endswith('\n') else '\n')
 
     summary_text = f'\nexit_code={exit_code}\nlog_path={log_path}\n'
