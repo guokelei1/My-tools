@@ -8,6 +8,7 @@ This repo is meant to grow over time. Each tool lives in its own folder with its
 
 - `tools/shortcut-cd/`: PowerShell enhancement that lets `cd` jump into Windows folder shortcuts like `codex.lnk` without manually typing `.lnk`
 - `tools/proxy-toggle/`: PowerShell enhancement that adds a `proxy` command to toggle local proxy environment variables
+- `tools/date-range-popup/`: Python quota calendar for `2026-03-25` to `2026-04-24` that reads actual usage from a local file and forecasts max future usage
 
 ## Current tools
 
@@ -34,6 +35,16 @@ Adds a `proxy` command to PowerShell:
 - second call removes both variables from the current session
 
 See `tools/proxy-toggle/README.md` for installation and removal.
+
+### `date-range-popup`
+
+Shows a popup quota calendar for a hardcoded date range.
+
+- reads actual daily usage from a local JSON file
+- forecasts the maximum future daily usage under daily, weekly, and total limits
+- renders the full range in a calendar-like popup with actual / forecast / stop states
+
+See `tools/date-range-popup/README.md` for usage.
 
 ## Notes
 

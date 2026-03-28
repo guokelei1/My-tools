@@ -16,26 +16,20 @@ if not exist "%MAIN_PY%" (
 )
 
 if exist "%VENV_PYTHON%" (
-    "%VENV_PYTHON%" "%MAIN_PY%" %*
-    set "EXIT_CODE=%ERRORLEVEL%"
-    if "%EXIT_CODE%"=="0" goto finish
+    goto run_venv
 )
 
 where py.exe >nul 2>nul
 if not errorlevel 1 (
     py -3 -c "import sys" >nul 2>nul
     if not errorlevel 1 (
-        py -3 "%MAIN_PY%" %*
-        set "EXIT_CODE=%ERRORLEVEL%"
-        if "%EXIT_CODE%"=="0" goto finish
+        goto run_py
     )
 )
 
 where python.exe >nul 2>nul
 if not errorlevel 1 (
-    python "%MAIN_PY%" %*
-    set "EXIT_CODE=%ERRORLEVEL%"
-    goto finish
+    goto run_python
 )
 
 echo context-menu-runner error: no Python interpreter found.
@@ -44,6 +38,21 @@ echo   %VENV_PYTHON%
 echo   py -3
 echo   python
 set "EXIT_CODE=1"
+goto finish
+
+:run_venv
+"%VENV_PYTHON%" "%MAIN_PY%" %*
+set "EXIT_CODE=%ERRORLEVEL%"
+goto finish
+
+:run_py
+py -3 "%MAIN_PY%" %*
+set "EXIT_CODE=%ERRORLEVEL%"
+goto finish
+
+:run_python
+python "%MAIN_PY%" %*
+set "EXIT_CODE=%ERRORLEVEL%"
 
 :finish
 if "%EXIT_CODE%"=="0" (

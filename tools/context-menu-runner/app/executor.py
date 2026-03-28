@@ -56,7 +56,7 @@ def run_action(context: InvocationContext, action: ActionSpec) -> RunResult:
         )
 
     logs_dir = ensure_logs_dir()
-    timestamp = datetime.now().strftime('%Y%m%d-%H%M%S')
+    timestamp = datetime.now().strftime('%Y%m%d-%H%M%S-%f')
     log_path = logs_dir / f'{timestamp}-{sanitize_name(action.name)}.log'
 
     header_lines = [

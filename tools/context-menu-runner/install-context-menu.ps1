@@ -4,7 +4,7 @@ $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $menuRoot = Join-Path $HOME 'menu'
 $installRoot = Join-Path $menuRoot 'context-menu-runner'
 $verbName = 'MyTools.ContextMenuRunner'
-$menuText = 'git 一键push'
+$menuText = 'git autocmd'
 
 $requiredPaths = @(
     (Join-Path $scriptRoot 'launcher\run-context.cmd'),

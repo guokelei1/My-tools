@@ -201,7 +201,7 @@ Explorer 右键
 
 右键菜单显示名称是：
 
-- `git 一键push`
+- `git autocmd`
 
 成功执行后由 launcher 让终端窗口额外停留 `5` 秒。
 
